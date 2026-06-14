@@ -1,37 +1,45 @@
 import { Header } from './components/Header.js';
 import { Loader } from './components/Loader.js';
-import { getGames } from '../utils/api.js';
+import { getGames } from './utils/api.js';
+import { Main } from './components/Main.js'
 import { Error } from './components/Error.js';
 import { Footer } from './components/Footer.js';
 
-async function init() {
-  const app = document.getElementById('app');
+const app = document.getElementById('app');
+
+async function loadGames(search = '') {
+  // Remove old Main if it exists
+  const oldMain = document.querySelector('.main');
+  if (oldMain) oldMain.remove();
+
   const loader = Loader();
-  
-  app.appendChild(Header());
   app.appendChild(loader);
   
   try {
-    const games = await getGames();
+    const data = await getGames(search);
     loader.remove();
-    app.appendChild(games);
+    const footer = document.querySelector('.footer');
+    app.insertBefore(Main(data.results), footer);
   } catch (error) {
     loader.remove();
     app.appendChild(Error(error.message));
   }
+}
+
+function init() {
+  const header = Header();
+  app.appendChild(header);
   
+  // Listen for search submit
+  const form = header.querySelector('.header__search');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const query = form.search.value.trim();
+    loadGames(query);
+  });
+
+  loadGames();
   app.appendChild(Footer());
 }
 
-
 init();
-// const mockData = [
-//   { 
-//     name: "Final Fantasy VII", 
-//     genre: "RPG", 
-//     plot: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus, officiis dolor quaerat aut commodi, quia eum quidem mollitia beatae ipsam impedit cumque sint exercitationem nulla, expedita ipsum consequuntur maiores nisi?",
-//     developer: { 
-//       name: "Squaresoft" 
-//     } 
-//   }
-// ];

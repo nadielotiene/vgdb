@@ -1,0 +1,49 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  background-color: blueviolet;
+}
+
+.header {
+  background-color:indigo;
+  color:fuchsia;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: lighter;
+}
+
+.card {
+  background-color: rgb(174, 139, 198);
+  color: rgb(46, 1, 78);
+  border: 1px solid indigo;
+  border-radius: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  line-height: 1.5rem;
+  padding: 1rem;
+}
+
+.card__image {
+  width: 100%;
+}
+
+li {
+  list-style: none;
+}
+
+.main__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.footer {
+  background-color: indigo;
+  color: fuchsia;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

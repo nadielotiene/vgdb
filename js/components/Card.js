@@ -1,23 +1,45 @@
 export function Card(game) {
-  const card = createElement('article');
+  const card = document.createElement('article');
   card.className = 'card';
-
-  const heading = document.createElement('h1');
-  heading.className = 'card__heading';
-  heading.textContent = 'Collection';
 
   const title = document.createElement('h2');
   title.className = 'card__title';
   title.textContent = game.name;
 
-  const genre = document.createElement('p');
-  genre.className = 'card__genre';
-  genre.textContent = game.genre;
+  const image = document.createElement('img');
+  image.className = 'card__image';
+  image.src = game.background_image ?? '';
+  image.alt = game.name;
 
-  const company = document.createElement('p');
-  company.className = 'card__company';
-  company.textContent = game.company;
+  const released = document.createElement('p');
+  released.className = 'card__released';
+  released.textContent = 'Release Date: ' + game.released;
 
-  card.append(heading, genre, company);
+  const rating = document.createElement('p');
+  rating.className = 'card__rating';
+  rating.textContent = 'Rating: ' + game.rating;
+
+  const platforms = document.createElement('ul');
+  platforms.className = 'card__platforms';
+  platforms.textContent = game.platforms.length === 1 ? 'Platform: ' : 'Platforms: ';
+  game.platforms.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = p.platform.name;
+    platforms.appendChild(li);
+  });
+
+  const genreList = document.createElement('ul');
+  genreList.className = 'card__genres';
+  genreList.textContent = 
+    game.genres.length === 1 ? 'Genre: ' : 'Genres: ';
+  game.genres.forEach((genre) => {
+    const li = document.createElement('li');
+    li.textContent = genre.name;
+    genreList.appendChild(li);
+  });
+
+  card.append(
+    title, image, released, rating, platforms, genreList
+  );
   return card;
 }

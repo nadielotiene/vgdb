@@ -12,7 +12,7 @@ export async function getGames(search = '', page = 1) {
 
   if (search) params.set('search', search);
 
-  const response = await fetch(`${BASE_URL}/games?${params}&ordering=-added`);
+  const response = await fetch(`${BASE_URL}/games?${params}`);
   if (!response.ok) throw new Error('something went wrong: ' + response.status);
   return response.json();
 }

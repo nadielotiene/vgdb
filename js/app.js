@@ -8,26 +8,31 @@ import { Footer } from './components/Footer.js';
 
 const app = document.getElementById('app');
 const PAGE_SIZE = 20;
-
 let currentSearch = '';
 
 async function loadGames(search = currentSearch, page = 1) {
   currentSearch = search;
-
+  
+  const footer = document.querySelector('.footer');
   const oldMain = document.querySelector('.main');
-  if (oldMain) oldMain.remove();
-
   const oldMainMore = document.querySelector('.pagination');
-  if (oldMainMore) oldMainMore.remove();
 
-  const loader = Loader();
-  app.appendChild(loader);
+  let loader;
+  if (oldMainMore) {
+    oldMainMore.querySelectorAll('button').forEach(btn => btn.disabled =true);
+    oldMainMore.querySelector('.pagination__info').textConetnt = 'Loading...';
+  } else {
+    loader = Loader();
+    app.insertBefore(loader, footer);
+  }
   
   try {
     const data = await getGames(currentSearch, page);
-    loader.remove();
+    
+    if (loader) loader.remove();
+    if (oldMain) oldMain.remove();
+    if (oldMainMore) oldMainMore.remove();
 
-    const footer = document.querySelector('.footer');
     app.insertBefore(Main(data.results), footer);
 
     const totalPages = Math.ceil(data.count / PAGE_SIZE);
@@ -36,14 +41,15 @@ async function loadGames(search = currentSearch, page = 1) {
 
     pagination.querySelector('.pagination__prev')
       .addEventListener('click', () => loadGames(currentSearch, page - 1));
-
     pagination.querySelector('.pagination__next')
       .addEventListener('click', () => loadGames(currentSearch, page + 1));
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (error) {
-    loader.remove();
-    app.appendChild(Error(error.message));
+    if (loader) loader.remove();
+    if (oldMain) oldMain.remove();
+    if (oldMainMore) oldMainMore.remove();
+    app.insertBefore(Error(error.message), footer);
   }
 }
 

@@ -39,7 +39,7 @@ export function Card(game) {
   });
 
   card.append(
-    title, image, released, rating, platforms, genreList
+    title, image, released, rating, genreList
   );
   return card;
 }
